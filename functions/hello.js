@@ -1,7 +1,7 @@
 // 꼭 비동기 함수로 만들어야지 동작한다
 exports.handler = async function (event, context) {
     return {
-        statusCode: 200 // 정상적인 응답을 의미
+        statusCode: 200, // 정상적인 응답을 의미
         // body: 'Hello'
         // body 부분은 서버리스 함수로 응답시켜줄 데이터를 명시
         // 문자데이터가 반환되는 구조일 수도 있고 객체 데이터를 사용할 수도 있다
