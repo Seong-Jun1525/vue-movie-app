@@ -1,4 +1,5 @@
 import axios from 'axios'
+// import { get } from 'lodash'
 import _uniqBy from 'lodash/uniqBy'
 
 const _defaultMessage = 'Search for the movie title!'
@@ -97,7 +98,7 @@ export default {
                         })
                     }
                 }
-            } catch (message) {
+            } catch ({ message }) {
                 commit('updateState', {
                     movies: [],
                     message
@@ -136,24 +137,39 @@ export default {
     }
 }
 
-function _fetchMovie(payload) {
-    const {title, type, year, page, id} = payload
-    const OMDB_API_KEY = '7035c60c'
-    const url = id
-    ? `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}`
-    : `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
-    // const url = `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}`
+async function _fetchMovie(payload) {
+    // const {title, type, year, page, id} = payload
+    // const OMDB_API_KEY = '7035c60c'
+    // const url = id
+    // ? `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}`
+    // : `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
+    // // const url = `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}`
 
-    return new Promise((resolve, reject) => {
-        axios.get(url)
-        .then((result) => {
-            if(result.data.Error) {
-                reject(result.data.Error)
-            }
-            resolve(result)
-        })
-        .catch((error) => {
-            reject(error.message)
-        })
-    })
+    // return new Promise((resolve, reject) => {
+    //     axios.get(url)
+    //     .then((result) => {
+    //         if(result.data.Error) {
+    //             reject(result.data.Error)
+    //         }
+    //         resolve(result)
+    //     })
+    //     .catch((error) => {
+    //         reject(error.message)
+    //     })
+    // })
+
+    return await axios.post('/.netlify/functions/movie', payload)
+    // post도 비동기로 동작
+
+    // post() vs get()
+    // get을 사용 할때 주소 부분에
+    // ? `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}` 이런식으로
+    // title의 값은 무엇이고 page의 값은 무엇인지 명시를 해줘야 함
+    // post는 QueryString으로 풀어서 작성하지 않고
+    // 바로 두번째 인수로 포함해서 전송함
+    // payload는 body라는 속성에 포함되서 전송이 됨
+
+    // 요약
+    // get은 필요로 하는 정보들을 QueryString으로 작성해서 즉, 요청하는 주소의 정보를 포함해서 전송
+    // post는 데이터를 요청할 때 그것을 body 속성에 담아서 전송
 }

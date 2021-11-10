@@ -1,4 +1,3 @@
-// 꼭 비동기 함수로 만들어야지 동작한다
 exports.handler = async function (event, context) {
     return {
         statusCode: 200, // 정상적인 응답을 의미
